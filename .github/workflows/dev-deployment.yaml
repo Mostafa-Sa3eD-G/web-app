@@ -17,9 +17,17 @@ jobs:
             username: ${{ vars.DOCKER_USERNAME }}
             password: ${{ secrets.DOCKER_TOKEN }}
 
-        - name: build docker image
-          run: docker build -t ${{ vars.DOCKER_USERNAME }}/web-app:latest .
+        - name: Docker build and push
+          uses: docker/build-push-action@v7
+          with:
+            context: .
+            push: true
+            tags: |
+              ${{ vars.DOCKER_USERNAME }}/web-app:1.0
 
-        - name: push docker image
-          run: docker push ${{ vars.DOCKER_USERNAME }}/web-app:latest
+        # - name: build docker image
+        #   run: docker build -t ${{ vars.DOCKER_USERNAME }}/web-app:latest .
+
+        # - name: push docker image
+        #   run: docker push ${{ vars.DOCKER_USERNAME }}/web-app:latest
           
