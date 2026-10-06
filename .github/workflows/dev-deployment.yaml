@@ -43,7 +43,9 @@ jobs:
           run: |
             ssh -i ~/.ssh/id_rsa ${{ vars.EC2_USER }}@${{ vars.EC2_HOST }} << EOF
               cd /home/ubuntu/web-app
-              sudo docker compose restart
+              export IMAGE_TAG=${{ env.short_tag }}
+              docker compose pull
+              docker compose up -d
             EOF
 
           
