@@ -1,0 +1,6 @@
+  services:
+    web:
+      image: mostafasa3ed/web-app:latest 
+      container_name: web-app
+      ports: 
+        - "80:80"
