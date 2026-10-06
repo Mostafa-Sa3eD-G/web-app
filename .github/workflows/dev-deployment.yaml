@@ -17,13 +17,18 @@ jobs:
             username: ${{ vars.DOCKER_USERNAME }}
             password: ${{ secrets.DOCKER_TOKEN }}
 
+        - name: Get short commit tag
+          run: echo "short_tag=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
         - name: Docker build and push
           uses: docker/build-push-action@v7
           with:
             context: .
             push: true
             tags: |
-              ${{ vars.DOCKER_USERNAME }}/web-app:1.0
+              ${{ vars.DOCKER_USERNAME }}/web-app:latest
+              ${{ vars.DOCKER_USERNAME }}/web-app:${{ env.short_tag }}
+
 
         # - name: build docker image
         #   run: docker build -t ${{ vars.DOCKER_USERNAME }}/web-app:latest .
