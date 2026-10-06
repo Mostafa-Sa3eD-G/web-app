@@ -1,0 +1,12 @@
+name: Dev Deployment
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  hello-world:
+    runs-on: ubuntu-latest
+    steps:
+        - name: print hello
+          run: echo "Hello World"
