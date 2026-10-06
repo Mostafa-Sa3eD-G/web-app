@@ -5,8 +5,12 @@ on:
       - main
 
 jobs:
-  hello-world:
+  Build:
     runs-on: ubuntu-latest
     steps:
-        - name: print hello
-          run: echo "Hello World"
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: build docker image
+          run: docker build -t web-app:latest .
+          
