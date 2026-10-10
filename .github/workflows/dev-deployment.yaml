@@ -5,7 +5,29 @@ on:
       - main
 
 jobs:
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Set up Python
+          uses: actions/setup-python@v4
+          with:
+            python-version: 3.12
+
+        - name: Install dependencies
+          run: |
+            python -m venv .venv
+            source .venv/bin/activate
+            pip install pytest
+
+        - name: Run tests
+          run: |
+            source .venv/bin/activate
+            python3 -m pytest --maxfail=1 --disable-warnings -q
   Build:
+    needs: Test
     runs-on: ubuntu-latest
     steps:
         - name: Checkout
@@ -38,7 +60,7 @@ jobs:
             echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
             chmod 400 ~/.ssh/id_rsa
             ssh-keyscan -H ${{ vars.EC2_HOST }} >> ~/.ssh/known_hosts
-            
+
         - name: Get short commit tag
           run: echo "short_tag=${GITHUB_SHA::7}" >> $GITHUB_ENV
         
