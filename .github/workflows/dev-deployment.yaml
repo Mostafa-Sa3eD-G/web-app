@@ -37,27 +37,33 @@ jobs:
           with:
             python-version: 3.12
 
-        - name: Install dependencies
-          run: |
-            python -m venv .venv
-            source .venv/bin/activate
-            pip install pytest pytest-cov sonar-scanner
-
-        - name: Run tests and generate coverage report
-          run: |
-            source .venv/bin/activate
-            python3 -m pytest --maxfail=1 --disable-warnings --cov=app --cov-report=term-missing --cov-report=xml -q
-
         - name: SonarQube Scan
+          uses: sonarsource/sonarqube-scan-action@master
           env:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          run: |
-            sonar-scanner \
-              -Dsonar.projectKey=web-app \
-              -Dsonar.sources=. \
-              -Dsonar.host.url=https://sonarcloud.io \
-              -Dsonar.login=$SONAR_TOKEN \
-              -Dsonar.python.coverage.reportPaths=coverage.xml
+            SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+        # - name: Install dependencies
+        #   run: |
+        #     python -m venv .venv
+        #     source .venv/bin/activate
+        #     pip install pytest pytest-cov sonar-scanner
+
+        # - name: Run tests and generate coverage report
+        #   run: |
+        #     source .venv/bin/activate
+        #     python3 -m pytest --maxfail=1 --disable-warnings --cov=app --cov-report=term-missing --cov-report=xml -q
+
+        # - name: SonarQube Scan
+        #   env:
+        #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        #   run: |
+        #     sonar-scanner \
+        #       -Dsonar.projectKey=web-app \
+        #       -Dsonar.sources=. \
+        #       -Dsonar.host.url=https://sonarcloud.io \
+        #       -Dsonar.login=$SONAR_TOKEN \
+        #       -Dsonar.python.coverage.reportPaths=coverage.xml
   Build:
     needs: [Unit_Test, SonarQube_Scan]
     runs-on: ubuntu-latest
