@@ -1,6 +1,0 @@
-  services:
-    web:
-      image: mostafasa3ed/web-app:${IMAGE_TAG} 
-      container_name: web-app
-      ports: 
-        - "80:80"

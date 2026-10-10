@@ -1,1 +1,4 @@
 linux-server-key.pem
+.venv
+.coverage
+coverage.xml
